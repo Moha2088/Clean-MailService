@@ -1,31 +1,64 @@
-﻿using MailAPI.Application.Interfaces.User;
+﻿using AutoMapper;
+using MailAPI.Application.Interfaces.User;
+using MailAPI.Domain.Entities;
 using MailAPI.Domain.Entities.Dtos.User;
+using MailAPI.Domain.Exceptions.User;
+using MailAPI.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace MailAPI.Infrastructure.Repositories;
 public class UserRepository : IUserRepository
 {
-    public Task CreateUser(UserCreateDto dto, CancellationToken cancellationToken)
+    private readonly DataContext _context;
+    private readonly IMapper _mapper;
+
+    public UserRepository(DataContext context, IMapper mapper)
     {
-        throw new NotImplementedException();
+        _context = context;
+        _mapper = mapper;
+    }
+    
+    public async Task CreateUser(UserCreateDto dto, CancellationToken cancellationToken)
+    {
+        if (_context.Users.Any(user => user.Email.Equals(dto.Email)))
+        {
+            throw new UserExistsException();
+        }
+        
+        var user = _mapper.Map<User>(dto);
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public Task<UserGetDto> GetUser(int userId, CancellationToken cancellationToken)
+    public async Task<UserGetDto> GetUser(int userId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var user = await _context.Users
+            .AsNoTracking()
+            .SingleOrDefaultAsync(x => x.Id.Equals((userId)), cancellationToken) ?? 
+                   throw new UserNotFoundException();
+
+        return _mapper.Map<UserGetDto>(user);
     }
 
-    public Task<List<UserGetDto>> GetUsers(CancellationToken cancellationToken)
+    public async Task<List<UserGetDto>> GetUsers(CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var users = await _context.Users
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        return _mapper.Map<List<UserGetDto>>(users);
     }
 
-    public Task UpdateUser(UserUpdateDto dto, CancellationToken cancellationToken)
+    public async Task UpdateUser(int id, UserUpdateDto dto, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var user = await _context.Users.FindAsync(id) ?? throw new UserNotFoundException();
+        _mapper.Map(user, dto);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public Task DeleteUser(int userId, CancellationToken cancellationToken)
+    public async Task DeleteUser(int id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var user = await _context.Users.FindAsync(id) ?? throw new UserNotFoundException();
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

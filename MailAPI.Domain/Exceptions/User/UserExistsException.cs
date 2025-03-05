@@ -6,7 +6,9 @@ namespace MailAPI.Domain.Exceptions.User;
 [Serializable]
 public class UserExistsException : Exception
 {
-    public UserExistsException() { }
+    private const string DefaultMessage = "User already exists!";
+    
+    public UserExistsException(): base(DefaultMessage) { }
     
     public UserExistsException(string message) : base(message) { }
     

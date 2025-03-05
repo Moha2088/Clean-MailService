@@ -9,7 +9,9 @@ namespace MailAPI.Domain.Exceptions.User;
 [Serializable]
 public class UserNotFoundException : Exception
 {
-    public UserNotFoundException() { }
+    private const string DefaultMessage = "User not found!";
+    
+    public UserNotFoundException() :base(DefaultMessage) { }
 
     public UserNotFoundException(string message) : base(message) { }
 

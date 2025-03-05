@@ -1,9 +1,9 @@
-﻿namespace MailAPI.Domain.Entities;
+﻿using MailAPI.Domain.Common;
 
-public class User
-{
-    public int Id { get; set; }
-    
+namespace MailAPI.Domain.Entities;
+
+public class User : BaseEntity
+{   
     public string Name { get; set; } = null!;
     
     public string Email { get; set; } = null!;
