@@ -1,5 +1,5 @@
 ﻿using MailAPI.Domain.Entities.Dtos;
-using MailAPI.Domain.Entities.Dtos.Email;
+using MailAPI.Domain.Entities.Dtos.EmailDtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MailAPI.API.Controllers;

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MailAPI.Application.Interfaces.User;
 using MailAPI.Domain.Entities;
-using MailAPI.Domain.Entities.Dtos.User;
+using MailAPI.Domain.Entities.Dtos.UserDtos;
 using MailAPI.Domain.Exceptions.User;
 using MailAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;

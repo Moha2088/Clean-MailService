@@ -9,7 +9,8 @@ namespace MailAPI.Domain.Exceptions.Email;
 public class EmailNotFoundException : Exception
 {
     private const string DefaultMessage = "Email not found!"; 
-    public EmailNotFoundException() { }
+ 
+    public EmailNotFoundException(): base(DefaultMessage) { }
 
     public EmailNotFoundException(string message): base(message) { }
     

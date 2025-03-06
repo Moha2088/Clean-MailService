@@ -1,5 +1,4 @@
-﻿using MailAPI.Domain.Entities.Dtos;
-using MailAPI.Domain.Entities.Dtos.Email;
+﻿using MailAPI.Domain.Entities.Dtos.EmailDtos;
 
 namespace MailAPI.Application.Interfaces.Email;
 public interface IEmailRepository

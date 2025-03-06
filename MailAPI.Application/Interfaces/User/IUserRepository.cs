@@ -1,4 +1,5 @@
-using MailAPI.Domain.Entities.Dtos.User;
+using MailAPI.Domain.Entities.Dtos.UserDtos;
+using MailAPI.Domain.Entities.Dtos.UserDtos;
 
 namespace MailAPI.Application.Interfaces.User;
 
