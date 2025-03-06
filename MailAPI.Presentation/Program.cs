@@ -4,6 +4,7 @@ using Scalar.AspNetCore;
 using MailAPI.Application;
 using MailAPI.Infrastructure;
 using Serilog;
+using MailAPI.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,8 @@ builder.Services.AddOpenApi();
 
 builder.Services
     .AddInfrastructureServices(builder)
-    .AddApplicationServices();
+    .AddApplicationServices()
+    .AddPresentationServices();
 
 builder.Host.UseSerilog((context, config) => config
     .ReadFrom.Configuration(context.Configuration));
