@@ -1,4 +1,4 @@
-﻿namespace MailAPI.API.Services;
+﻿namespace MailAPI.Presentation.Services;
 
 public class AuthenticationService
 {

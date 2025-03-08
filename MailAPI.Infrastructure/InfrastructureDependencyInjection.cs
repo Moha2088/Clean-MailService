@@ -1,7 +1,7 @@
 ﻿using Hangfire;
+using MailAPI.Application.Handlers.Dtos;
 using MailAPI.Application.Interfaces.Email;
 using MailAPI.Application.Interfaces.User;
-using MailAPI.Domain.Entities.Dtos;
 using MailAPI.Infrastructure.Data;
 using MailAPI.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;

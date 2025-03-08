@@ -1,8 +1,7 @@
-﻿using MailAPI.Domain.Entities.Dtos;
-using MailAPI.Domain.Entities.Dtos.EmailDtos;
+﻿using MailAPI.Application.Handlers.Dtos.EmailDtos;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MailAPI.API.Controllers;
+namespace MailAPI.Presentation.Controllers;
 
 [ApiController]
 [Route("api/mails")]

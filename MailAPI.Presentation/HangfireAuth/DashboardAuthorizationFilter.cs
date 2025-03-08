@@ -1,7 +1,7 @@
 ﻿using Hangfire.Annotations;
 using Hangfire.Dashboard;
 
-namespace MailAPI.API.HangfireAuth;
+namespace MailAPI.Presentation.HangfireAuth;
 
 public class DashboardAuthorizationFilter : IDashboardAuthorizationFilter
 {

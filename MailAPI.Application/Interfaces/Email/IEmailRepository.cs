@@ -1,4 +1,4 @@
-﻿using MailAPI.Domain.Entities.Dtos.EmailDtos;
+﻿using MailAPI.Application.Handlers.Dtos.EmailDtos;
 
 namespace MailAPI.Application.Interfaces.Email;
 public interface IEmailRepository

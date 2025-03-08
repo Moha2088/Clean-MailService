@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MailAPI.Application.Interfaces.User;
 using MailAPI.Domain.Entities;
-using MailAPI.Domain.Entities.Dtos.UserDtos;
 using MailAPI.Domain.Exceptions.User;
 using MailAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +18,7 @@ public class UserRepository : IUserRepository
         _mapper = mapper;
     }
     
-    public async Task CreateUser(UserCreateDto dto, CancellationToken cancellationToken)
+    public async Task<int> CreateUser(UserCreateDto dto, CancellationToken cancellationToken)
     {
         if (_context.Users.Any(user => user.Email.Equals(dto.Email)))
         {
@@ -28,25 +28,27 @@ public class UserRepository : IUserRepository
         var user = _mapper.Map<User>(dto);
         _context.Users.Add(user);
         await _context.SaveChangesAsync(cancellationToken);
+
+        return user.Id;
     }
 
-    public async Task<UserGetDto> GetUser(int userId, CancellationToken cancellationToken)
+    public async Task<UserGetResponseDto> GetUser(UserGetRequestDto dto, CancellationToken cancellationToken)
     {
         var user = await _context.Users
             .AsNoTracking()
-            .SingleOrDefaultAsync(x => x.Id.Equals((userId)), cancellationToken) ?? 
+            .SingleOrDefaultAsync(x => x.Id.Equals((dto.Id)), cancellationToken) ?? 
                    throw new UserNotFoundException();
 
-        return _mapper.Map<UserGetDto>(user);
+        return _mapper.Map<UserGetResponseDto>(user);
     }
 
-    public async Task<List<UserGetDto>> GetUsers(CancellationToken cancellationToken)
+    public async Task<List<UserGetResponseDto>> GetUsers(CancellationToken cancellationToken)
     {
         var users = await _context.Users
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 
-        return _mapper.Map<List<UserGetDto>>(users);
+        return _mapper.Map<List<UserGetResponseDto>>(users);
     }
 
     public async Task UpdateUser(int id, UserUpdateDto dto, CancellationToken cancellationToken)

@@ -1,18 +1,16 @@
 ﻿using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Hangfire;
-using MailAPI.Domain.Entities.Dtos;
 using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Net.Mail;
-using MailAPI.Application.Interfaces;
 using MailAPI.Application.Interfaces.Email;
-using MailAPI.Domain.Entities.Dtos.EmailDtos;
 using MailAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using MailAPI.Domain.Entities;
 using Microsoft.Extensions.Logging;
+using MailAPI.Application.Handlers.Dtos.EmailDtos;
 
 namespace MailAPI.Infrastructure.Repositories;
 public class EmailRepository : IEmailRepository

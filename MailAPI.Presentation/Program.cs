@@ -1,10 +1,10 @@
 using Hangfire;
-using MailAPI.API.HangfireAuth;
 using Scalar.AspNetCore;
 using MailAPI.Application;
 using MailAPI.Infrastructure;
 using Serilog;
 using MailAPI.Presentation;
+using MailAPI.Presentation.HangfireAuth;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +20,8 @@ builder.Services
     .AddPresentationServices();
 
 builder.Host.UseSerilog((context, config) => config
-    .ReadFrom.Configuration(context.Configuration));
+    .MinimumLevel.Debug()
+    .WriteTo.Console());
 
 var app = builder.Build();
 
@@ -29,9 +30,9 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference(opt => opt
-    .WithTitle("MailAPI")
-    .WithTheme(ScalarTheme.BluePlanet)
-    .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient));
+        .WithTitle("MailAPI")
+        .WithTheme(ScalarTheme.BluePlanet)
+        .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient));
 }
 
 app.UseHttpsRedirection();
