@@ -18,7 +18,7 @@ public class UserRepository : IUserRepository
         _mapper = mapper;
     }
     
-    public async Task<int> CreateUser(UserCreateDto dto, CancellationToken cancellationToken)
+    public async Task<UserGetResponseDto> CreateUser(UserCreateDto dto, CancellationToken cancellationToken)
     {
         if (_context.Users.Any(user => user.Email.Equals(dto.Email)))
         {
@@ -29,7 +29,7 @@ public class UserRepository : IUserRepository
         _context.Users.Add(user);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return user.Id;
+        return _mapper.Map<UserGetResponseDto>(user);
     }
 
     public async Task<UserGetResponseDto> GetUser(UserGetRequestDto dto, CancellationToken cancellationToken)

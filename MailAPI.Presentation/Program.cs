@@ -20,8 +20,7 @@ builder.Services
     .AddPresentationServices();
 
 builder.Host.UseSerilog((context, config) => config
-    .MinimumLevel.Debug()
-    .WriteTo.Console());
+    .ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
 

@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MailAPI.Application.Handlers.Users.Create
 {
-    public sealed class CreateUserHandler : IRequestHandler<UserCreateDto, int>
+    public sealed class CreateUserHandler : IRequestHandler<UserCreateDto, UserGetResponseDto>
     {
         private readonly IUserRepository _userRepository;
 
@@ -13,10 +13,10 @@ namespace MailAPI.Application.Handlers.Users.Create
             _userRepository = userRepository;
         }
 
-        public async Task<int> Handle(UserCreateDto dto, CancellationToken cancellationToken)
+        public async Task<UserGetResponseDto> Handle(UserCreateDto dto, CancellationToken cancellationToken)
         {
-            var userId = await _userRepository.CreateUser(dto,cancellationToken);
-            return userId;
+            var user = await _userRepository.CreateUser(dto,cancellationToken);
+            return user;
         }
     }
 }
