@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailAPI.Infrastructure", ".
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailAPI.Application", "..\MailAPI.Application\MailAPI.Application.csproj", "{2FD8BA75-D4AD-4AD6-AAC0-FB911FBACE38}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailAPI.Tests", "..\MailAPI.Tests\MailAPI.Tests.csproj", "{1E2CA852-186C-46E8-9B0E-9E4005C2344A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,8 +35,15 @@ Global
 		{2FD8BA75-D4AD-4AD6-AAC0-FB911FBACE38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FD8BA75-D4AD-4AD6-AAC0-FB911FBACE38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FD8BA75-D4AD-4AD6-AAC0-FB911FBACE38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E2CA852-186C-46E8-9B0E-9E4005C2344A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E2CA852-186C-46E8-9B0E-9E4005C2344A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E2CA852-186C-46E8-9B0E-9E4005C2344A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E2CA852-186C-46E8-9B0E-9E4005C2344A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BDE2CB92-4F52-4944-A177-49D30BD9174D}
 	EndGlobalSection
 EndGlobal
