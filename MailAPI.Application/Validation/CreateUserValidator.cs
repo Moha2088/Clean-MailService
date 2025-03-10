@@ -4,7 +4,7 @@ using MediatR;
 
 namespace MailAPI.Application.Validation
 {
-    public class CreateUserValidator : AbstractValidator<UserCreateDto>
+    public sealed class CreateUserValidator : AbstractValidator<UserCreateDto>
     {
         public CreateUserValidator()
         {
@@ -14,17 +14,32 @@ namespace MailAPI.Application.Validation
             RuleFor(x => x.Password)
                 .MinimumLength(8)
                 .Must(HaveAtLeastOneInteger)
-                .WithMessage("Password should be atleast 8 characters and contain a number");
-        }
+                .Must(HaveAtleastOneUpperAndOneLower)
+                .Must(HaveAtleastOneSpecialChar)
+                .WithMessage("Password should be at least 8 characters and contain a number and a special character");
+        }   
 
         private bool HaveAtLeastOneInteger(string password)
         {
             return password.Any(char.IsDigit);
         }
+
+        private bool HaveAtleastOneUpperAndOneLower(string password)
+        {
+            return password.Any(ch => char.IsUpper(ch)) && password.Any(ch => char.IsLower(ch));
+        }
+
+        private bool HaveAtleastOneSpecialChar (string password)
+        {
+            char[] specialChars = { '[','@','_', '-', '!', '#', '$', '%', '^', 
+                '&', '*', '(', ')', '<', '>', '?', '}', '{', '~', ':', ']'};
+
+            return password.Any(ch => specialChars.Any(spCh => ch.Equals(spCh)));
+        }
     }
+        
     
-    
-    public class CreateUserPipelineBehaviour : IPipelineBehavior<UserCreateDto, UserGetResponseDto>
+    public sealed class CreateUserPipelineBehaviour : IPipelineBehavior<UserCreateDto, UserGetResponseDto>
     {
         public async Task<UserGetResponseDto> Handle(UserCreateDto dto, RequestHandlerDelegate<UserGetResponseDto> next, CancellationToken cancellationToken)
         {
