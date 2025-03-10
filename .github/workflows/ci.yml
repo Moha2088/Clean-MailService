@@ -1,0 +1,29 @@
+
+name: CI
+
+env:
+  TEST_PATH: MailAPI.Tests
+
+on:
+  push:
+    branches: [ "main", "tests" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: cd ${{ env.TEST_PATH }} && dotnet restore
+    - name: Build
+      run: cd ${{ env.TEST_PATH }} && dotnet build --no-restore
+    - name: Run Unit & Integration Tests
+      run: cd ${{ env.TEST_PATH }} && dotnet test --no-build
