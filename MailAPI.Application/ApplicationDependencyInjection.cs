@@ -1,4 +1,5 @@
 ﻿using MailAPI.Application.Validation;
+using MailAPI.Application.Validation.User;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MailAPI.Application

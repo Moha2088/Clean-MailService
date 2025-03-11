@@ -9,6 +9,6 @@ namespace MailAPI.Tests.IntegrationTests.Common
     public static class BaseAddress
     {
         public const string User = "api/users";
-        public const string Mail = "api/mails";
+        public const string Email = "api/mails";
     }
 }

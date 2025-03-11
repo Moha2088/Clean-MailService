@@ -9,12 +9,10 @@ namespace MailAPI.Tests.IntegrationTests
     public class UserControllerTests : IClassFixture<CustomWebApplicationFactory>
     {
         private readonly HttpClient _client;
-        private readonly CustomWebApplicationFactory _factory;
 
         public UserControllerTests(CustomWebApplicationFactory factory)
         {
-            _factory = factory;
-            _client = _factory.CreateClient();
+            _client = factory.CreateClient();
         }
 
 

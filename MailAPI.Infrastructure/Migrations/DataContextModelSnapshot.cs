@@ -48,7 +48,7 @@ namespace MailAPI.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Emails");
+                    b.ToTable("Emails", (string)null);
                 });
 
             modelBuilder.Entity("MailAPI.Domain.Entities.User", b =>
@@ -73,7 +73,7 @@ namespace MailAPI.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("MailAPI.Domain.Entities.Email", b =>

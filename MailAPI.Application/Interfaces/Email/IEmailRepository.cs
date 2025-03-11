@@ -3,7 +3,7 @@
 namespace MailAPI.Application.Interfaces.Email;
 public interface IEmailRepository
 {
-    Task SendEmail(EmailCreateDto dto, CancellationToken cancellationToken);
-    Task<EmailGetDto> GetEmail(int id, CancellationToken cancellationToken);
-    Task<List<EmailGetDto>> GetEmails(CancellationToken cancellationToken);
+    Task<EmailGetResponseDto> SendEmail(EmailCreateDto dto, CancellationToken cancellationToken);
+    Task<EmailGetResponseDto> GetEmail(int id, CancellationToken cancellationToken);
+    Task<List<EmailGetResponseDto>> GetEmails(CancellationToken cancellationToken);
 }

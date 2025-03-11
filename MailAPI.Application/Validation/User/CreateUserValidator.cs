@@ -2,21 +2,22 @@
 using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MediatR;
 
-namespace MailAPI.Application.Validation
+namespace MailAPI.Application.Validation.User
 {
     public sealed class CreateUserValidator : AbstractValidator<UserCreateDto>
     {
         public CreateUserValidator()
         {
             RuleFor(x => x.Email)
-                .Must(x => x.Contains('@'));
+                .Must(x => x.Contains('@'))
+                .WithMessage("Please enter a valid email!");
 
             RuleFor(x => x.Password)
                 .MinimumLength(8)
                 .Must(HaveAtLeastOneInteger)
                 .Must(HaveAtleastOneUpperAndOneLower)
                 .Must(HaveAtleastOneSpecialChar)
-                .WithMessage("Password should be at least 8 characters and contain a number and a special character");
+                .WithMessage("Password should be at least 8 characters and contain a number and a special character!");
         }   
 
         private bool HaveAtLeastOneInteger(string password)

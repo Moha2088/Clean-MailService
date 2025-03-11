@@ -1,4 +1,6 @@
-﻿using MailAPI.Infrastructure.Data;
+﻿using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Configurations;
+using MailAPI.Infrastructure.Data;
 using MailAPI.Presentation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -11,12 +13,8 @@ namespace MailAPI.Tests.IntegrationTests.Factory
 {
     public class CustomWebApplicationFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
     {
-        private readonly MsSqlContainer _container = new MsSqlBuilder()
-            .WithName("MSSQL_IntTestContainer")
-            .WithPassword("MysSQLPassword123_")
-            .Build();
-
-
+        private readonly MsSqlContainer _container = new MsSqlBuilder().Build();
+        
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
@@ -45,7 +43,9 @@ namespace MailAPI.Tests.IntegrationTests.Factory
             using var scope = Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<DataContext>();
 
-            if (context.Database.GetPendingMigrations().Any())
+            var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
+            
+            if (pendingMigrations.Any())
             {
                 await context.Database.MigrateAsync();
             }
@@ -53,7 +53,7 @@ namespace MailAPI.Tests.IntegrationTests.Factory
 
         async Task IAsyncLifetime.DisposeAsync()
         {
-            await _container.StopAsync();
-        }
+            await _container.DisposeAsync();
+        } 
     }
 }

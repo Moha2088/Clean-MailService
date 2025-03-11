@@ -34,10 +34,10 @@ public class EmailRepository : IEmailRepository
         _backgroundJobClient = backgroundJobClient;
     }
 
-    public async Task SendEmail(EmailCreateDto dto, CancellationToken cancellationToken)
+    public async Task<EmailGetResponseDto> SendEmail(EmailCreateDto dto, CancellationToken cancellationToken)
     {
         var fromEmail = _secretClient.GetSecret("FROM-EMAIL").Value.Value;
-        var appPassword = _secretClient.GetSecret("APP.PASSWORD").Value.Value;
+        var appPassword = _secretClient.GetSecret("APP-PASSWORD").Value.Value;
 
         MailMessage message = new MailMessage()
         {
@@ -56,12 +56,9 @@ public class EmailRepository : IEmailRepository
             Credentials = credentials
         };
 
-        _context.Emails.Add(new Email
-        {
-            To = dto.To,
-            Subject = dto.Subject,
-            Body = dto.Body
-        });
+        var email = _mapper.Map<Email>(dto);
+
+        _context.Emails.Add(email);
 
         await _context.SaveChangesAsync(cancellationToken);
         await smtpClient.SendMailAsync(message, cancellationToken);
@@ -70,24 +67,26 @@ public class EmailRepository : IEmailRepository
             TimeSpan.FromSeconds(30));
 
         _backgroundJobClient.ContinueJobWith(mailJobId, () => _logger.LogInformation("Follow up email has been sent!"));
+
+        return _mapper.Map<EmailGetResponseDto>(email);
     }
 
-    public async Task<EmailGetDto> GetEmail(int id, CancellationToken cancellationToken)
+    public async Task<EmailGetResponseDto> GetEmail(int id, CancellationToken cancellationToken)
     {
         var email = await _context.Emails
             .AsNoTracking()
             .SingleOrDefaultAsync(x => x.Id.Equals(id), cancellationToken);
 
-        return _mapper.Map<EmailGetDto>(email);
+        return _mapper.Map<EmailGetResponseDto>(email);
     }
 
-    public async Task<List<EmailGetDto>> GetEmails(CancellationToken cancellationToken)
+    public async Task<List<EmailGetResponseDto>> GetEmails(CancellationToken cancellationToken)
     {
         var emails = await _context.Emails
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 
-        return _mapper.Map<List<EmailGetDto>>(emails);
+        return _mapper.Map<List<EmailGetResponseDto>>(emails);
     }
 
     private async Task SendFollowUpMail(string from, string to, SmtpClient smtpClient)
