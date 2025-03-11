@@ -1,6 +1,4 @@
-﻿using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Containers;
-using MailAPI.Infrastructure.Data;
+﻿using MailAPI.Infrastructure.Data;
 using MailAPI.Presentation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -14,6 +12,7 @@ namespace MailAPI.Tests.IntegrationTests.Factory
     public class CustomWebApplicationFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
     {
         private readonly MsSqlContainer _container = new MsSqlBuilder()
+            .WithName("MSSQL_IntTestContainer")
             .WithPassword("MysSQLPassword123_")
             .Build();
 
