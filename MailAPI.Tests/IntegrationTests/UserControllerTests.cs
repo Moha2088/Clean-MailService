@@ -1,18 +1,14 @@
 ﻿using MailAPI.Application.Handlers.Dtos.UserDtos;
-using MailAPI.Infrastructure.Data;
+using MailAPI.Tests.IntegrationTests.Common;
 using MailAPI.Tests.IntegrationTests.Factory;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using System.Net.Http.Json;
-using System.Runtime.InteropServices.ObjectiveC;
-using System.Text.Json;
 
 namespace MailAPI.Tests.IntegrationTests
 {
     public class UserControllerTests : IClassFixture<CustomWebApplicationFactory>
     {
-        private HttpClient _client;
+        private readonly HttpClient _client;
         private readonly CustomWebApplicationFactory _factory;
 
         public UserControllerTests(CustomWebApplicationFactory factory)
@@ -35,7 +31,7 @@ namespace MailAPI.Tests.IntegrationTests
         public async Task CreateUser_ShouldReturnCreated_WhenDtoIsValid(string name, string email, string password)
         {
             var userDto = new UserCreateDto(name, email, password);
-            var result = await _client.PostAsJsonAsync("api/users", userDto);
+            var result = await _client.PostAsJsonAsync(BaseAddress.User, userDto);
 
             result.EnsureSuccessStatusCode();
             Assert.NotNull(result);
@@ -46,7 +42,7 @@ namespace MailAPI.Tests.IntegrationTests
         public async Task CreateUser_ShouldReturnInternalServerError_WhenValidationFails()
         {
             var userDto = new UserCreateDto("Hans", "h@h.com", "123");
-            var result = await _client.PostAsJsonAsync("api/users", userDto);
+            var result = await _client.PostAsJsonAsync(BaseAddress.User, userDto);
             
             Assert.Equal(HttpStatusCode.InternalServerError, result.StatusCode);
         }
@@ -54,7 +50,7 @@ namespace MailAPI.Tests.IntegrationTests
         [Fact]
         public async Task GetUsers_ShouldReturnNotFound_WhenNoUsersExist()
         {
-            var results = await _client.GetAsync("api/users");
+            var results = await _client.GetAsync(BaseAddress.User);
 
             Assert.NotNull(results);
             Assert.Equal(HttpStatusCode.NotFound, results.StatusCode);

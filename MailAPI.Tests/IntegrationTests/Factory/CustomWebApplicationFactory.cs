@@ -1,6 +1,4 @@
-﻿using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Containers;
-using MailAPI.Infrastructure.Data;
+﻿using MailAPI.Infrastructure.Data;
 using MailAPI.Presentation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
