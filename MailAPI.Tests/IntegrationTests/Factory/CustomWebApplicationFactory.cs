@@ -12,6 +12,7 @@ namespace MailAPI.Tests.IntegrationTests.Factory
     public class CustomWebApplicationFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
     {
         private readonly MsSqlContainer _container = new MsSqlBuilder()
+            .WithName("MSSQL_IntTestContainer")
             .WithPassword("MysSQLPassword123_")
             .Build();
 
