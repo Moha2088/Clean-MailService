@@ -1,9 +1,11 @@
 using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MailAPI.Presentation.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/users")]
 public class UserController : ControllerBase
@@ -14,7 +16,7 @@ public class UserController : ControllerBase
     {
         _mediator = mediator;
     }
-    
+
 
     /// <summary>
     /// Creates a user
@@ -34,10 +36,11 @@ public class UserController : ControllerBase
     /// <param name="cancellationToken">A cancellation token</param>
     /// <response code="201">Returns created with the user id</response>
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateUser([FromBody] UserCreateDto dto, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(dto,cancellationToken);
+        var result = await _mediator.Send(dto, cancellationToken);
         return Created(nameof(CreateUser), result);
     }
 

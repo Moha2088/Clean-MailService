@@ -1,16 +1,19 @@
 ﻿using MailAPI.Application.Handlers.Dtos.EmailDtos;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace MailAPI.Presentation.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/mails")]
-public class MailController : ControllerBase
+public class EmailController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public MailController(IMediator mediator) 
+    public EmailController(IMediator mediator) 
     {
         _mediator = mediator;
     }
@@ -26,6 +29,8 @@ public class MailController : ControllerBase
     [ProducesResponseType(typeof(EmailGetResponseDto), StatusCodes.Status201Created)]
     public async Task<IActionResult> SendEmail([FromBody] EmailCreateDto dto, CancellationToken cancellationToken)
     {
+        int.TryParse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out var authenticatedUserId);
+        dto.UserId = authenticatedUserId;
         var email = await _mediator.Send(dto, cancellationToken);
         return Ok(email);
     }

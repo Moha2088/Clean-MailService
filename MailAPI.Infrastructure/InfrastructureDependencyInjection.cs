@@ -1,5 +1,6 @@
 ﻿using Hangfire;
 using MailAPI.Application.Handlers.Dtos;
+using MailAPI.Application.Interfaces;
 using MailAPI.Application.Interfaces.Email;
 using MailAPI.Application.Interfaces.User;
 using MailAPI.Infrastructure.Data;
@@ -25,6 +26,7 @@ namespace MailAPI.Infrastructure
 
             services.AddScoped<IEmailRepository, EmailRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
 
             #endregion
 

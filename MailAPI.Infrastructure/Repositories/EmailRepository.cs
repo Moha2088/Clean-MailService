@@ -11,6 +11,8 @@ using AutoMapper;
 using MailAPI.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using MailAPI.Application.Handlers.Dtos.EmailDtos;
+using MailAPI.Domain.Exceptions.User;
+using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 
 namespace MailAPI.Infrastructure.Repositories;
 public class EmailRepository : IEmailRepository
@@ -43,7 +45,8 @@ public class EmailRepository : IEmailRepository
         {
             Subject = dto.Subject,
             Body = dto.Body,
-            IsBodyHtml = true
+            IsBodyHtml = true,
+            From = new MailAddress(fromEmail)
         };
 
         message.To.Add(new MailAddress(dto.To));
@@ -58,12 +61,14 @@ public class EmailRepository : IEmailRepository
 
         var email = _mapper.Map<Email>(dto);
 
+        var user = await _context.Users.FindAsync(dto.UserId, cancellationToken) ?? throw new UserNotFoundException();
+        email.User = user;
         _context.Emails.Add(email);
 
         await _context.SaveChangesAsync(cancellationToken);
-        await smtpClient.SendMailAsync(message, cancellationToken);
+        await smtpClient.SendMailAsync(message);
 
-        var mailJobId = _backgroundJobClient.Schedule(() => SendFollowUpMail(fromEmail, dto.To, smtpClient),
+        var mailJobId = _backgroundJobClient.Schedule(() => SendFollowUpMail(user.Id, new MailAddress(fromEmail), dto.To, credentials),
             TimeSpan.FromSeconds(30));
 
         _backgroundJobClient.ContinueJobWith(mailJobId, () => _logger.LogInformation("Follow up email has been sent!"));
@@ -89,7 +94,7 @@ public class EmailRepository : IEmailRepository
         return _mapper.Map<List<EmailGetResponseDto>>(emails);
     }
 
-    private async Task SendFollowUpMail(string from, string to, SmtpClient smtpClient)
+    public async Task SendFollowUpMail(int userId, MailAddress from, string to, NetworkCredential credentials)
     {
         var subject = "Continuation Email";
         var body = "<p>Hello</p>" +
@@ -101,19 +106,33 @@ public class EmailRepository : IEmailRepository
         {
             Subject = subject,
             Body = body,
-            IsBodyHtml = true
+            IsBodyHtml = true,
+            From = from
         };
 
         followUpMessage.To.Add(new MailAddress(to));
 
-        _context.Emails.Add(new Email
+        var followUpMail = new Email
         {
             To = to,
             Subject = subject,
-            Body = body
-        });
+            Body = body,
+        };
+
+        var user = await _context.Users.FindAsync(userId) ?? throw new UserNotFoundException();
+
+        followUpMail.User = user;
+
+        _context.Emails.Add(followUpMail);
 
         await _context.SaveChangesAsync();
+
+        var smtpClient = new SmtpClient("smtp.gmail.com")
+        {
+            Port = 587,
+            EnableSsl = true,
+            Credentials = credentials
+        };
 
         await smtpClient.SendMailAsync(followUpMessage);
     }
