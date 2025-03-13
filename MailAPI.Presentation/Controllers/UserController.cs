@@ -1,3 +1,4 @@
+using FluentValidation;
 using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -40,8 +41,16 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateUser([FromBody] UserCreateDto dto, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(dto, cancellationToken);
-        return Created(nameof(CreateUser), result);
+        try
+        {
+            var result = await _mediator.Send(dto, cancellationToken);
+            return Created(nameof(CreateUser), result);
+        }
+
+        catch(ValidationException e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     /// <summary>

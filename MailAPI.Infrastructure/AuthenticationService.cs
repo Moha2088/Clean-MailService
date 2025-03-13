@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
+using BC = BCrypt.Net.BCrypt;
 
 namespace MailAPI.Infrastructure;
 
@@ -28,8 +28,13 @@ public class AuthenticationService : IAuthenticationService
     {
         var user = await _context.Users
             .AsNoTracking()
-            .SingleOrDefaultAsync(x => x.Email.Equals(dto.Email) && x.Password.Equals(dto.Password), 
-                cancellationToken) ?? throw new UserNotFoundException();
+            .SingleOrDefaultAsync(x => x.Email.Equals(dto.Email) , 
+                cancellationToken);
+
+        if(user == null || !BC.Verify(dto.Password, user.Password))
+        {
+            throw new UnauthorizedAccessException("Incorrect email and password");
+        }
 
         var token = GenerateToken(user);
         return new TokenDto(Token: token);

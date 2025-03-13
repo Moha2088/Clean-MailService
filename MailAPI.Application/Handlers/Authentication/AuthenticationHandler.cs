@@ -27,7 +27,7 @@ namespace MailAPI.Application.Handlers.Authentication
                 return token;
             }
 
-            catch (UserNotFoundException)
+            catch (UnauthorizedAccessException)
             {
                 throw;
             }

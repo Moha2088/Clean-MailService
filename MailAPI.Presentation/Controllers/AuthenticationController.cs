@@ -25,9 +25,9 @@ namespace MailAPI.Presentation.Controllers
                 return Ok(result.Token);
             }
 
-            catch(UserNotFoundException e)
+            catch(UnauthorizedAccessException e)
             {
-                return NotFound(e.Message);
+                return Unauthorized(e.Message);
             }
         }
     }

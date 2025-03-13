@@ -5,6 +5,7 @@ using MailAPI.Domain.Entities;
 using MailAPI.Domain.Exceptions.User;
 using MailAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using BC = BCrypt.Net.BCrypt;
 
 namespace MailAPI.Infrastructure.Repositories;
 public class UserRepository : IUserRepository
@@ -26,6 +27,9 @@ public class UserRepository : IUserRepository
         }
         
         var user = _mapper.Map<User>(dto);
+
+        string passwordHash = BC.HashPassword(dto.Password);
+        user.Password = passwordHash;
         _context.Users.Add(user);
         await _context.SaveChangesAsync(cancellationToken);
 
