@@ -28,7 +28,8 @@ public class AuthenticationService : IAuthenticationService
     {
         var user = await _context.Users
             .AsNoTracking()
-            .SingleOrDefaultAsync(x => x.Email.Equals(dto.Email), cancellationToken) ?? throw new UserNotFoundException();
+            .SingleOrDefaultAsync(x => x.Email.Equals(dto.Email) && x.Password.Equals(dto.Password), 
+                cancellationToken) ?? throw new UserNotFoundException();
 
         var token = GenerateToken(user);
         return new TokenDto(Token: token);

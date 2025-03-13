@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using MailAPI.Application.Handlers.Dtos.EmailDtos;
 using MailAPI.Domain.Exceptions.User;
 using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
+using MailAPI.Domain.Exceptions.Email;
 
 namespace MailAPI.Infrastructure.Repositories;
 public class EmailRepository : IEmailRepository
@@ -80,7 +81,7 @@ public class EmailRepository : IEmailRepository
     {
         var email = await _context.Emails
             .AsNoTracking()
-            .SingleOrDefaultAsync(x => x.Id.Equals(id), cancellationToken);
+            .SingleOrDefaultAsync(x => x.Id.Equals(id), cancellationToken) ?? throw new EmailNotFoundException();
 
         return _mapper.Map<EmailGetResponseDto>(email);
     }

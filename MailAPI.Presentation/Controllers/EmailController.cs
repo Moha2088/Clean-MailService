@@ -1,4 +1,5 @@
 ﻿using MailAPI.Application.Handlers.Dtos.EmailDtos;
+using MailAPI.Domain.Exceptions.Email;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,8 +47,16 @@ public class EmailController : ControllerBase
     public async Task<IActionResult> GetEmail([FromRoute] int id, CancellationToken cancellationToken)
     {
         var requestDto = new EmailGetRequestDto(Id: id);
-        var email = await _mediator.Send(requestDto, cancellationToken);
-        return Ok(email);
+        try
+        {
+            var email = await _mediator.Send(requestDto, cancellationToken);
+            return Ok(email);
+        }
+
+        catch(EmailNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
     }
 
     /// <summary>

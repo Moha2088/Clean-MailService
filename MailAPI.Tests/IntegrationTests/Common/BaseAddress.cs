@@ -10,5 +10,6 @@ namespace MailAPI.Tests.IntegrationTests.Common
     {
         public const string User = "api/users";
         public const string Email = "api/mails";
+        public const string Auth = "api/auth";
     }
 }

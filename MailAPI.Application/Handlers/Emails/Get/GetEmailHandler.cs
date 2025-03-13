@@ -2,6 +2,7 @@
 
 using MailAPI.Application.Handlers.Dtos.EmailDtos;
 using MailAPI.Application.Interfaces.Email;
+using MailAPI.Domain.Exceptions.Email;
 using MediatR;
 
 namespace MailAPI.Application.Handlers.Emails.Get
@@ -18,8 +19,16 @@ namespace MailAPI.Application.Handlers.Emails.Get
 
         public async Task<EmailGetResponseDto> Handle(EmailGetRequestDto dto, CancellationToken cancellationToken)
         {
-            var email = await _emailRepository.GetEmail(dto.Id, cancellationToken);
-            return email;
+            try
+            {
+                var email = await _emailRepository.GetEmail(dto.Id, cancellationToken);
+                return email;
+            }
+
+            catch (EmailNotFoundException)
+            {
+                throw;
+            }
         }
     }
 }

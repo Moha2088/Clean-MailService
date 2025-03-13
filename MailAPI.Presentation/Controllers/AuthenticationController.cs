@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MailAPI.Presentation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
