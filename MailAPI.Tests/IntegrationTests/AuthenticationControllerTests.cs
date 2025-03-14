@@ -8,17 +8,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MailAPI.Tests.IntegrationTests;
 
-public class AuthenticationController : IClassFixture<CustomWebApplicationFactory>
+public class AuthenticationControllerTests : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly HttpClient _client;
     private readonly DataContext _context;
-    public AuthenticationController(CustomWebApplicationFactory factory)
+    public AuthenticationControllerTests(CustomWebApplicationFactory factory)
     {
         _client = factory.CreateClient();
         var scope = factory.Services.CreateScope();
         _context = scope.ServiceProvider.GetRequiredService<DataContext>();
     }
-    
+
     [Fact]
     public async Task Login_ShouldReturnOK_WhenUserExists()
     {
@@ -26,14 +26,14 @@ public class AuthenticationController : IClassFixture<CustomWebApplicationFactor
         {
             Name = "Test",
             Email = "test@example.com",
-            Password = "Test"
+            Password = "Test123123_"
         };
-        
-        _context.Users.Add(user);
+
+        await _client.PostAsJsonAsync(BaseAddress.User, user);
         await _context.SaveChangesAsync();
 
         var result = await _client.PostAsJsonAsync($"{BaseAddress.Auth}/login", user);
-        
+
         result.EnsureSuccessStatusCode();
         Assert.NotNull(result);
         Assert.Equal(HttpStatusCode.OK, result.StatusCode);

@@ -2,12 +2,13 @@
 
 using MailAPI.Application.Handlers.Dtos.EmailDtos;
 using MailAPI.Application.Interfaces.Email;
+using MailAPI.Application.Queries;
 using MailAPI.Domain.Exceptions.Email;
 using MediatR;
 
 namespace MailAPI.Application.Handlers.Emails.Get
 {
-    public sealed class GetEmailHandler : IRequestHandler<EmailGetRequestDto, EmailGetResponseDto>
+    public sealed class GetEmailHandler : IRequestHandler<EmailGetQuery, EmailGetResponseDto>
     {
         private readonly IEmailRepository _emailRepository;
 
@@ -17,7 +18,7 @@ namespace MailAPI.Application.Handlers.Emails.Get
         }
 
 
-        public async Task<EmailGetResponseDto> Handle(EmailGetRequestDto dto, CancellationToken cancellationToken)
+        public async Task<EmailGetResponseDto> Handle(EmailGetQuery dto, CancellationToken cancellationToken)
         {
             try
             {

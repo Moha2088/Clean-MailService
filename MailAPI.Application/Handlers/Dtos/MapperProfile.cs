@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using MailAPI.Application.Commands.Emails;
+using MailAPI.Application.Commands.Users;
 using MailAPI.Application.Handlers.Dtos.EmailDtos;
 using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MailAPI.Domain.Entities;
@@ -9,10 +11,10 @@ namespace MailAPI.Application.Handlers.Dtos
     {
         public MapperProfile()
         {
-            CreateMap<UserCreateDto, User>();
+            CreateMap<UserCreateCommand, User>();
             CreateMap<User, UserGetResponseDto>();
 
-            CreateMap<EmailCreateDto, Email>();
+            CreateMap<EmailCreateCommand, Email>();
             CreateMap<Email, EmailGetResponseDto>();
         }
     }

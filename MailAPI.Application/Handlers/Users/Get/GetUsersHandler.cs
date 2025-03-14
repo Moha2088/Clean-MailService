@@ -1,10 +1,11 @@
 ﻿using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MailAPI.Application.Interfaces.User;
+using MailAPI.Application.Queries;
 using MediatR;
 
 namespace MailAPI.Application.Handlers.Users.Get
 {
-    public sealed class GetUsersHandler : IRequestHandler<UsersGetDto, List<UserGetResponseDto>>
+    public sealed class GetUsersHandler : IRequestHandler<UsersGetQuery, List<UserGetResponseDto>>
     {
         private readonly IUserRepository _userRepository;
 
@@ -15,7 +16,7 @@ namespace MailAPI.Application.Handlers.Users.Get
 
 
 
-        public async Task<List<UserGetResponseDto>> Handle(UsersGetDto request, CancellationToken cancellationToken)
+        public async Task<List<UserGetResponseDto>> Handle(UsersGetQuery request, CancellationToken cancellationToken)
         {
             var users = await _userRepository.GetUsers(cancellationToken);
             return users;

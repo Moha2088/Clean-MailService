@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using MailAPI.Application.Commands.Users;
 using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MailAPI.Application.Interfaces.User;
+using MailAPI.Application.Queries;
 using MailAPI.Domain.Entities;
 using MailAPI.Domain.Exceptions.User;
 using MailAPI.Infrastructure.Data;
@@ -19,7 +21,7 @@ public class UserRepository : IUserRepository
         _mapper = mapper;
     }
     
-    public async Task<UserGetResponseDto> CreateUser(UserCreateDto dto, CancellationToken cancellationToken)
+    public async Task<UserGetResponseDto> CreateUser(UserCreateCommand dto, CancellationToken cancellationToken)
     {
         if (_context.Users.Any(user => user.Email.Equals(dto.Email)))
         {
@@ -36,7 +38,7 @@ public class UserRepository : IUserRepository
         return _mapper.Map<UserGetResponseDto>(user);
     }
 
-    public async Task<UserGetResponseDto> GetUser(UserGetRequestDto dto, CancellationToken cancellationToken)
+    public async Task<UserGetResponseDto> GetUser(UserGetQuery dto, CancellationToken cancellationToken)
     {
         var user = await _context.Users
             .AsNoTracking()
@@ -55,7 +57,7 @@ public class UserRepository : IUserRepository
         return _mapper.Map<List<UserGetResponseDto>>(users);
     }
 
-    public async Task UpdateUser(int id, UserUpdateDto dto, CancellationToken cancellationToken)
+    public async Task UpdateUser(int id, UserUpdateCommand dto, CancellationToken cancellationToken)
     {
         var user = await _context.Users.FindAsync(id) ?? throw new UserNotFoundException();
         _mapper.Map(user, dto);

@@ -1,5 +1,7 @@
 using FluentValidation;
+using MailAPI.Application.Commands.Users;
 using MailAPI.Application.Handlers.Dtos.UserDtos;
+using MailAPI.Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +41,7 @@ public class UserController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
-    public async Task<IActionResult> CreateUser([FromBody] UserCreateDto dto, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateUser([FromBody] UserCreateCommand dto, CancellationToken cancellationToken)
     {
         try
         {
@@ -63,7 +65,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(UserGetResponseDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUser([FromRoute] int id, CancellationToken cancellationToken)
     {
-        var requestDto = new UserGetRequestDto(Id: id);
+        var requestDto = new UserGetQuery(Id: id);
         var result = await _mediator.Send(requestDto, cancellationToken);
         return Ok(result);
     }
@@ -79,7 +81,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(List<UserGetResponseDto>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUsers(CancellationToken cancellationToken)
     {
-        var results = await _mediator.Send(new UsersGetDto(), cancellationToken);
+        var results = await _mediator.Send(new UsersGetQuery(), cancellationToken);
         return results.Any() ? Ok(results) : NotFound();
     }
 
@@ -92,7 +94,7 @@ public class UserController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser([FromRoute] int id, CancellationToken cancellationToken)
     {
-        var requestDto = new DeleteUserRequestDto(Id: id);
+        var requestDto = new UserDeleteCommand(Id: id);
         await _mediator.Send(requestDto, cancellationToken);
         return NoContent();
     }

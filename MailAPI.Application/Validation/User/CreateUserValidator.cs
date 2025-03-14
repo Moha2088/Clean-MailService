@@ -1,10 +1,11 @@
 ﻿using FluentValidation;
+using MailAPI.Application.Commands.Users;
 using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MediatR;
 
 namespace MailAPI.Application.Validation.User
 {
-    public sealed class CreateUserValidator : AbstractValidator<UserCreateDto>
+    public sealed class CreateUserValidator : AbstractValidator<UserCreateCommand>
     {
         public CreateUserValidator()
         {
@@ -40,9 +41,9 @@ namespace MailAPI.Application.Validation.User
     }
         
     
-    public sealed class CreateUserPipelineBehaviour : IPipelineBehavior<UserCreateDto, UserGetResponseDto>
+    public sealed class CreateUserPipelineBehaviour : IPipelineBehavior<UserCreateCommand, UserGetResponseDto>
     {
-        public async Task<UserGetResponseDto> Handle(UserCreateDto dto, RequestHandlerDelegate<UserGetResponseDto> next, CancellationToken cancellationToken)
+        public async Task<UserGetResponseDto> Handle(UserCreateCommand dto, RequestHandlerDelegate<UserGetResponseDto> next, CancellationToken cancellationToken)
         {
             var createUserValidator = new CreateUserValidator();
             var validationResult = await createUserValidator.ValidateAsync(dto, cancellationToken);

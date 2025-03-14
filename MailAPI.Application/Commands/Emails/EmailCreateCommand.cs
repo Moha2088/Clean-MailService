@@ -1,9 +1,10 @@
-﻿using MediatR;
+﻿using MailAPI.Application.Handlers.Dtos.EmailDtos;
+using MediatR;
 using System.Text.Json.Serialization;
 
-namespace MailAPI.Application.Handlers.Dtos.EmailDtos;
+namespace MailAPI.Application.Commands.Emails;
 
-public class EmailCreateDto : IRequest<EmailGetResponseDto>
+public class EmailCreateCommand : IRequest<EmailGetResponseDto>
 {
     [JsonIgnore]
     public int UserId { get; set; }

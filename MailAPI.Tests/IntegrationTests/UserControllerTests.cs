@@ -1,4 +1,5 @@
-﻿using MailAPI.Application.Handlers.Dtos.UserDtos;
+﻿using MailAPI.Application.Commands.Users;
+using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MailAPI.Tests.IntegrationTests.Common;
 using MailAPI.Tests.IntegrationTests.Factory;
 using System.Net;
@@ -28,7 +29,7 @@ namespace MailAPI.Tests.IntegrationTests
         [MemberData(nameof(UserDtoData))]
         public async Task CreateUser_ShouldReturnCreated_WhenDtoIsValid(string name, string email, string password)
         {
-            var userDto = new UserCreateDto(name, email, password);
+            var userDto = new UserCreateCommand(name, email, password);
             var result = await _client.PostAsJsonAsync(BaseAddress.User, userDto);
 
             result.EnsureSuccessStatusCode();
@@ -37,12 +38,12 @@ namespace MailAPI.Tests.IntegrationTests
         }
 
         [Fact]
-        public async Task CreateUser_ShouldReturnInternalServerError_WhenValidationFails()
+        public async Task CreateUser_ShouldReturnBadRequest_WhenValidationFails()
         {
-            var userDto = new UserCreateDto("Hans", "h@h.com", "123");
+            var userDto = new UserCreateCommand("Hans", "h@h.com", "123");
             var result = await _client.PostAsJsonAsync(BaseAddress.User, userDto);
             
-            Assert.Equal(HttpStatusCode.InternalServerError, result.StatusCode);
+            Assert.Equal(HttpStatusCode.BadRequest, result.StatusCode);
         }
 
         [Fact]

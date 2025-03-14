@@ -1,10 +1,11 @@
 ﻿using FluentValidation;
+using MailAPI.Application.Commands.Emails;
 using MailAPI.Application.Handlers.Dtos.EmailDtos;
 using MediatR;
 
 namespace MailAPI.Application.Validation.Email
 {
-    public sealed class SendEmailValidator : AbstractValidator<EmailCreateDto>
+    public sealed class SendEmailValidator : AbstractValidator<EmailCreateCommand>
     {
         public SendEmailValidator()
         {
@@ -23,9 +24,9 @@ namespace MailAPI.Application.Validation.Email
         }
     }
 
-    public sealed class SendMailPipelineBehaviour : IPipelineBehavior<EmailCreateDto, EmailGetResponseDto>
+    public sealed class SendMailPipelineBehaviour : IPipelineBehavior<EmailCreateCommand, EmailGetResponseDto>
     {
-        public async Task<EmailGetResponseDto> Handle(EmailCreateDto request, RequestHandlerDelegate<EmailGetResponseDto> next, CancellationToken cancellationToken)
+        public async Task<EmailGetResponseDto> Handle(EmailCreateCommand request, RequestHandlerDelegate<EmailGetResponseDto> next, CancellationToken cancellationToken)
         {
             var sendMailValidator = new SendEmailValidator();
             var validationResult = await sendMailValidator.ValidateAsync(request, cancellationToken);

@@ -14,6 +14,7 @@ using MailAPI.Application.Handlers.Dtos.EmailDtos;
 using MailAPI.Domain.Exceptions.User;
 using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 using MailAPI.Domain.Exceptions.Email;
+using MailAPI.Application.Commands.Emails;
 
 namespace MailAPI.Infrastructure.Repositories;
 public class EmailRepository : IEmailRepository
@@ -37,7 +38,7 @@ public class EmailRepository : IEmailRepository
         _backgroundJobClient = backgroundJobClient;
     }
 
-    public async Task<EmailGetResponseDto> SendEmail(EmailCreateDto dto, CancellationToken cancellationToken)
+    public async Task<EmailGetResponseDto> SendEmail(EmailCreateCommand dto, CancellationToken cancellationToken)
     {
         var fromEmail = _secretClient.GetSecret("FROM-EMAIL").Value.Value;
         var appPassword = _secretClient.GetSecret("APP-PASSWORD").Value.Value;
