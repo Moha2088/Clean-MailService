@@ -2,6 +2,7 @@ using FluentValidation;
 using MailAPI.Application.Commands.Users;
 using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MailAPI.Application.Queries;
+using MailAPI.Application.Queries.Users;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

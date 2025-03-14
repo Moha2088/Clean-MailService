@@ -3,6 +3,7 @@
 using MailAPI.Application.Handlers.Dtos.EmailDtos;
 using MailAPI.Application.Interfaces.Email;
 using MailAPI.Application.Queries;
+using MailAPI.Application.Queries.Emails;
 using MailAPI.Domain.Exceptions.Email;
 using MediatR;
 

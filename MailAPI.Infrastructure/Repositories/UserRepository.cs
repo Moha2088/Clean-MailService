@@ -3,6 +3,7 @@ using MailAPI.Application.Commands.Users;
 using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MailAPI.Application.Interfaces.User;
 using MailAPI.Application.Queries;
+using MailAPI.Application.Queries.Users;
 using MailAPI.Domain.Entities;
 using MailAPI.Domain.Exceptions.User;
 using MailAPI.Infrastructure.Data;

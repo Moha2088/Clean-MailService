@@ -1,6 +1,7 @@
 using MailAPI.Application.Commands.Users;
 using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MailAPI.Application.Queries;
+using MailAPI.Application.Queries.Users;
 
 namespace MailAPI.Application.Interfaces.User;
 

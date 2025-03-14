@@ -1,12 +1,7 @@
 ﻿using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MailAPI.Application.Queries
+namespace MailAPI.Application.Queries.Users
 {
     /// <summary>
     /// Record for the GetUsers-endpoint with no members, but is necessary since the MediatR requesthandler requires a request object

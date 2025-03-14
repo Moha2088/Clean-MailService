@@ -1,12 +1,7 @@
 ﻿using MailAPI.Application.Handlers.Dtos.EmailDtos;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MailAPI.Application.Queries
+namespace MailAPI.Application.Queries.Emails
 {
     /// <summary>
     /// Record for the GetEmails-endpoint with no members, but is necessary since the MediatR requesthandler requires a request object
