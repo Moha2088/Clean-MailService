@@ -1,3 +1,3 @@
 # Clean-MailService
 
-.NET API with Clean Architecture pattern
+.NET API with Clean Architecture and CQRS pattern
