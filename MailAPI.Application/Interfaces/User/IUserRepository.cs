@@ -10,6 +10,6 @@ public interface IUserRepository
     Task<UserGetResponseDto> CreateUser(UserCreateCommand dto, CancellationToken cancellationToken);
     Task<UserGetResponseDto> GetUser(UserGetQuery dto, CancellationToken cancellationToken);
     Task<List<UserGetResponseDto>> GetUsers(CancellationToken cancellationToken);
-    Task UpdateUser(int id, UserUpdateCommand dto, CancellationToken cancellationToken);
-    Task DeleteUser(int id, CancellationToken cancellationToken);
+    Task<UserGetResponseDto> UpdateUser(UserUpdateCommand dto, CancellationToken cancellationToken);
+    Task<UserGetResponseDto> DeleteUser(int id, CancellationToken cancellationToken);
 }

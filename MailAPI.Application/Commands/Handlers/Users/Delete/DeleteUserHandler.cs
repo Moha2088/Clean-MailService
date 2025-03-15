@@ -1,28 +1,27 @@
 ﻿using MailAPI.Application.Commands.Handlers.Dtos.UserDtos;
 using MailAPI.Application.Commands.Users;
 using MailAPI.Application.Interfaces.User;
+using MailAPI.Domain.DomainEvents.Users;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MailAPI.Application.Commands.Handlers.Users.Delete
 {
-    public sealed class DeleteUserHandler : IRequestHandler<UserDeleteCommand, DeleteUserResponseDto>
+    public sealed class DeleteUserHandler : IRequestHandler<UserDeleteCommand, UserGetResponseDto>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IPublisher _publisher;
 
-        public DeleteUserHandler(IUserRepository userRepository)
+        public DeleteUserHandler(IUserRepository userRepository, IPublisher publisher)
         {
             _userRepository = userRepository;
+            _publisher = publisher;
         }
 
-        public async Task<DeleteUserResponseDto> Handle(UserDeleteCommand dto, CancellationToken cancellationToken)
+        public async Task<UserGetResponseDto> Handle(UserDeleteCommand dto, CancellationToken cancellationToken)
         {
-            await _userRepository.DeleteUser(dto.Id, cancellationToken);
-            return new DeleteUserResponseDto();
+            var user = await _userRepository.DeleteUser(dto.Id, cancellationToken);
+            await _publisher.Publish(new UserDeletedEvent(user.Id, user.Name));
+            return user;
         }
     }
 }

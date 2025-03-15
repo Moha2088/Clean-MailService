@@ -3,5 +3,5 @@ using MediatR;
 
 namespace MailAPI.Application.Commands.Users
 {
-    public record UserDeleteCommand(int Id) : IRequest<DeleteUserResponseDto>;
+    public record UserDeleteCommand(int Id) : IRequest<UserGetResponseDto>;
 }

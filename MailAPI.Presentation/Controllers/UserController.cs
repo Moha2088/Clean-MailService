@@ -3,6 +3,7 @@ using MailAPI.Application.Commands.Handlers.Dtos.UserDtos;
 using MailAPI.Application.Commands.Users;
 using MailAPI.Application.Queries;
 using MailAPI.Application.Queries.Users;
+using MailAPI.Domain.Exceptions.User;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -79,11 +80,37 @@ public class UserController : ControllerBase
     /// <response code="404">Returns NotFound when the list is empty</response>
     [HttpGet]
     [ProducesResponseType(typeof(List<UserGetResponseDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(List<UserGetResponseDto>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUsers(CancellationToken cancellationToken)
     {
         var results = await _sender.Send(new UsersGetQuery(), cancellationToken);
         return results.Any() ? Ok(results) : NotFound();
+    }
+
+    /// <summary>
+    /// Updates a user
+    /// </summary>
+    /// <param name="id">Id of the user to update</param>
+    /// <param name="dto">Command for updating user</param>
+    /// <param name="cancellationToken">A cancellation token</param>
+    /// <response code="200">Returns OK with updated user</response>
+    /// <response code="404">Returns NotFound if the user doesn't exist</response>
+    [HttpPut("{id:int}")]
+    [ProducesResponseType(typeof(List<UserGetResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateUser([FromRoute] int id, [FromBody] UserUpdateCommand dto, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var requestDto = new UserUpdateCommand(Id: id, dto.Name, dto.Email, dto.Password);
+            var result = await _sender.Send(requestDto, cancellationToken);
+            return Ok(result);
+        }
+
+        catch(UserNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
     }
 
     /// <summary>
@@ -92,7 +119,7 @@ public class UserController : ControllerBase
     /// <param name="id">Id of the user</param>
     /// <param name="cancellationToken">A cancellation token</param>
     /// <response code="204">Returns NoContent</response>
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteUser([FromRoute] int id, CancellationToken cancellationToken)
     {
         var requestDto = new UserDeleteCommand(Id: id);

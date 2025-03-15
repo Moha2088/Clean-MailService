@@ -2,7 +2,6 @@
 using MailAPI.Application.Commands.Handlers.Dtos.UserDtos;
 using MailAPI.Application.Commands.Users;
 using MailAPI.Application.Interfaces.User;
-using MailAPI.Application.Queries;
 using MailAPI.Application.Queries.Users;
 using MailAPI.Domain.Entities;
 using MailAPI.Domain.Exceptions.User;
@@ -58,16 +57,18 @@ public class UserRepository : IUserRepository
         return _mapper.Map<List<UserGetResponseDto>>(users);
     }
 
-    public async Task UpdateUser(int id, UserUpdateCommand dto, CancellationToken cancellationToken)
+    public async Task<UserGetResponseDto>UpdateUser(UserUpdateCommand dto, CancellationToken cancellationToken)
     {
-        var user = await _context.Users.FindAsync(id) ?? throw new UserNotFoundException();
-        _mapper.Map(user, dto);
+        var user = await _context.Users.FindAsync(dto.Id) ?? throw new UserNotFoundException();
+        _mapper.Map(dto, user);
         await _context.SaveChangesAsync(cancellationToken);
+        return _mapper.Map<UserGetResponseDto>(user);
     }
 
-    public async Task DeleteUser(int id, CancellationToken cancellationToken)
+    public async Task<UserGetResponseDto> DeleteUser(int id, CancellationToken cancellationToken)
     {
         var user = await _context.Users.FindAsync(id) ?? throw new UserNotFoundException();
         await _context.SaveChangesAsync(cancellationToken);
+        return _mapper.Map<UserGetResponseDto>(user);
     }
 }

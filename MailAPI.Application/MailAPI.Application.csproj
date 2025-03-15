@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Commands\Handlers\Users\Put\**" />
+    <EmbeddedResource Remove="Commands\Handlers\Users\Put\**" />
+    <None Remove="Commands\Handlers\Users\Put\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MailAPI.Domain\MailAPI.Domain.csproj" />
   </ItemGroup>
 

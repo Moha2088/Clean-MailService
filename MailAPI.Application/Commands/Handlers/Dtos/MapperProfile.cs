@@ -16,6 +16,8 @@ namespace MailAPI.Application.Commands.Handlers.Dtos
 
             CreateMap<EmailCreateCommand, Email>();
             CreateMap<Email, EmailGetResponseDto>();
+
+            CreateMap<UserUpdateCommand, User>();
         }
     }
 }
