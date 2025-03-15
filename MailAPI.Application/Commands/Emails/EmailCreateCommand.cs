@@ -1,4 +1,4 @@
-﻿using MailAPI.Application.Handlers.Dtos.EmailDtos;
+﻿using MailAPI.Application.Commands.Handlers.Dtos.EmailDtos;
 using MediatR;
 using System.Text.Json.Serialization;
 

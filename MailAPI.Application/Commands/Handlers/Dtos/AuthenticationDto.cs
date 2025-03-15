@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MailAPI.Application.Handlers.Dtos
+namespace MailAPI.Application.Commands.Handlers.Dtos
 {
     public record AuthenticationDto(string Email, string Password) : IRequest<TokenDto>;
 }

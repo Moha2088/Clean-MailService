@@ -1,5 +1,5 @@
 ﻿using MailAPI.Application.Commands.Emails;
-using MailAPI.Application.Handlers.Dtos.EmailDtos;
+using MailAPI.Application.Commands.Handlers.Dtos.EmailDtos;
 
 namespace MailAPI.Application.Interfaces.Email;
 public interface IEmailRepository

@@ -1,5 +1,5 @@
-﻿using MailAPI.Application.Commands.Users;
-using MailAPI.Application.Handlers.Dtos.UserDtos;
+﻿using MailAPI.Application.Commands.Handlers.Dtos.UserDtos;
+using MailAPI.Application.Commands.Users;
 using MailAPI.Application.Interfaces.User;
 using MediatR;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MailAPI.Application.Handlers.Users.Delete
+namespace MailAPI.Application.Commands.Handlers.Users.Delete
 {
     public sealed class DeleteUserHandler : IRequestHandler<UserDeleteCommand, DeleteUserResponseDto>
     {

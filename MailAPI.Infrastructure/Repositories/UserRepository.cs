@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using MailAPI.Application.Commands.Handlers.Dtos.UserDtos;
 using MailAPI.Application.Commands.Users;
-using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MailAPI.Application.Interfaces.User;
 using MailAPI.Application.Queries;
 using MailAPI.Application.Queries.Users;

@@ -1,5 +1,4 @@
 ﻿using MailAPI.Application.Commands.Users;
-using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MailAPI.Tests.IntegrationTests.Common;
 using MailAPI.Tests.IntegrationTests.Factory;
 using System.Net;

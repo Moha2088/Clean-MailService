@@ -1,4 +1,4 @@
-﻿using MailAPI.Application.Handlers.Dtos;
+﻿using MailAPI.Application.Commands.Handlers.Dtos;
 using MailAPI.Application.Interfaces;
 using MailAPI.Domain.Entities;
 using MailAPI.Domain.Exceptions.User;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MailAPI.Application.Handlers.Dtos
+namespace MailAPI.Application.Commands.Handlers.Dtos.UserDtos
 {
-    public record TokenDto(string Token);
+    public record DeleteUserResponseDto();
 }

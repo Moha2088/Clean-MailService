@@ -1,4 +1,4 @@
-﻿using MailAPI.Application.Handlers.Dtos.UserDtos;
+﻿using MailAPI.Application.Commands.Handlers.Dtos.UserDtos;
 using MediatR;
 
 namespace MailAPI.Application.Commands.Users

@@ -10,11 +10,11 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using MailAPI.Domain.Entities;
 using Microsoft.Extensions.Logging;
-using MailAPI.Application.Handlers.Dtos.EmailDtos;
 using MailAPI.Domain.Exceptions.User;
 using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 using MailAPI.Domain.Exceptions.Email;
 using MailAPI.Application.Commands.Emails;
+using MailAPI.Application.Commands.Handlers.Dtos.EmailDtos;
 
 namespace MailAPI.Infrastructure.Repositories;
 public class EmailRepository : IEmailRepository

@@ -1,6 +1,6 @@
 using FluentValidation;
+using MailAPI.Application.Commands.Handlers.Dtos.UserDtos;
 using MailAPI.Application.Commands.Users;
-using MailAPI.Application.Handlers.Dtos.UserDtos;
 using MailAPI.Application.Queries;
 using MailAPI.Application.Queries.Users;
 using MediatR;
@@ -14,11 +14,11 @@ namespace MailAPI.Presentation.Controllers;
 [Route("api/users")]
 public class UserController : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly ISender _sender;
 
     public UserController(IMediator mediator)
     {
-        _mediator = mediator;
+        _sender = mediator;
     }
 
 
@@ -46,7 +46,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            var result = await _mediator.Send(dto, cancellationToken);
+            var result = await _sender.Send(dto, cancellationToken);
             return Created(nameof(CreateUser), result);
         }
 
@@ -67,7 +67,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> GetUser([FromRoute] int id, CancellationToken cancellationToken)
     {
         var requestDto = new UserGetQuery(Id: id);
-        var result = await _mediator.Send(requestDto, cancellationToken);
+        var result = await _sender.Send(requestDto, cancellationToken);
         return Ok(result);
     }
 
@@ -82,7 +82,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(List<UserGetResponseDto>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetUsers(CancellationToken cancellationToken)
     {
-        var results = await _mediator.Send(new UsersGetQuery(), cancellationToken);
+        var results = await _sender.Send(new UsersGetQuery(), cancellationToken);
         return results.Any() ? Ok(results) : NotFound();
     }
 
@@ -96,7 +96,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> DeleteUser([FromRoute] int id, CancellationToken cancellationToken)
     {
         var requestDto = new UserDeleteCommand(Id: id);
-        await _mediator.Send(requestDto, cancellationToken);
+        await _sender.Send(requestDto, cancellationToken);
         return NoContent();
     }
 }

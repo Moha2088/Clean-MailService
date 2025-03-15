@@ -1,13 +1,11 @@
-﻿
-
-using MailAPI.Application.Handlers.Dtos.EmailDtos;
+﻿using MailAPI.Application.Commands.Handlers.Dtos.EmailDtos;
 using MailAPI.Application.Interfaces.Email;
 using MailAPI.Application.Queries;
 using MailAPI.Application.Queries.Emails;
 using MailAPI.Domain.Exceptions.Email;
 using MediatR;
 
-namespace MailAPI.Application.Handlers.Emails.Get
+namespace MailAPI.Application.Commands.Handlers.Emails.Get
 {
     public sealed class GetEmailHandler : IRequestHandler<EmailGetQuery, EmailGetResponseDto>
     {

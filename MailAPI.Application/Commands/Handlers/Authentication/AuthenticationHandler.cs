@@ -1,4 +1,4 @@
-﻿using MailAPI.Application.Handlers.Dtos;
+﻿using MailAPI.Application.Commands.Handlers.Dtos;
 using MailAPI.Application.Interfaces;
 using MailAPI.Domain.Exceptions.User;
 using MediatR;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MailAPI.Application.Handlers.Authentication
+namespace MailAPI.Application.Commands.Handlers.Authentication
 {
     public sealed class AuthenticationHandler : IRequestHandler<AuthenticationDto, TokenDto>
     {

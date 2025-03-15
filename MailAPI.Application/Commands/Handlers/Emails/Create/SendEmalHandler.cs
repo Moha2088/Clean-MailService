@@ -1,9 +1,9 @@
 ﻿using MailAPI.Application.Commands.Emails;
-using MailAPI.Application.Handlers.Dtos.EmailDtos;
+using MailAPI.Application.Commands.Handlers.Dtos.EmailDtos;
 using MailAPI.Application.Interfaces.Email;
 using MediatR;
 
-namespace MailAPI.Application.Handlers.Emails.Create
+namespace MailAPI.Application.Commands.Handlers.Emails.Create
 {
     public sealed class SendEmalHandler : IRequestHandler<EmailCreateCommand, EmailGetResponseDto>
     {

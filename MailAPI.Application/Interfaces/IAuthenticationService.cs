@@ -1,4 +1,4 @@
-﻿using MailAPI.Application.Handlers.Dtos;
+﻿using MailAPI.Application.Commands.Handlers.Dtos;
 using MailAPI.Domain.Entities;
 
 namespace MailAPI.Application.Interfaces;

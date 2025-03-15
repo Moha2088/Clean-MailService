@@ -1,5 +1,4 @@
-﻿using MailAPI.Application.Handlers.Dtos.EmailDtos;
-using MailAPI.Domain.Entities;
+﻿using MailAPI.Domain.Entities;
 using MailAPI.Infrastructure.Data;
 using MailAPI.Tests.IntegrationTests.Common;
 using MailAPI.Tests.IntegrationTests.Factory;

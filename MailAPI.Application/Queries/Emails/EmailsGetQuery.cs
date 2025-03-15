@@ -1,4 +1,4 @@
-﻿using MailAPI.Application.Handlers.Dtos.EmailDtos;
+﻿using MailAPI.Application.Commands.Handlers.Dtos.EmailDtos;
 using MediatR;
 
 namespace MailAPI.Application.Queries.Emails

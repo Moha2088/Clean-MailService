@@ -1,5 +1,5 @@
 ﻿using Hangfire;
-using MailAPI.Application.Handlers.Dtos;
+using MailAPI.Application.Commands.Handlers.Dtos;
 using MailAPI.Application.Interfaces;
 using MailAPI.Application.Interfaces.Email;
 using MailAPI.Application.Interfaces.User;

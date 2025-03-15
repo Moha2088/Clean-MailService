@@ -1,5 +1,4 @@
-﻿using MailAPI.Application.Handlers.Dtos;
-using MailAPI.Domain.Exceptions.User;
+﻿using MailAPI.Application.Commands.Handlers.Dtos;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +8,11 @@ namespace MailAPI.Presentation.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly ISender _sender;
 
         public AuthenticationController(IMediator mediator)
         {
-            _mediator = mediator;
+            _sender = mediator;
         }
 
         [HttpPost("login")]
@@ -21,7 +20,7 @@ namespace MailAPI.Presentation.Controllers
         {
             try
             {
-                var result = await _mediator.Send(dto, cancellationToken);
+                var result = await _sender.Send(dto, cancellationToken);
                 return Ok(result.Token);
             }
 

@@ -1,5 +1,4 @@
 ﻿using MailAPI.Application.Commands.Emails;
-using MailAPI.Application.Handlers.Dtos.EmailDtos;
 using MailAPI.Application.Queries;
 using MailAPI.Domain.Exceptions.Email;
 using MediatR;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using MailAPI.Application.Queries.Emails;
+using MailAPI.Application.Commands.Handlers.Dtos.EmailDtos;
 
 namespace MailAPI.Presentation.Controllers;
 
@@ -15,11 +15,11 @@ namespace MailAPI.Presentation.Controllers;
 [Route("api/mails")]
 public class EmailController : ControllerBase
 {
-    private readonly IMediator _mediator;
+    private readonly ISender _sender;
 
     public EmailController(IMediator mediator) 
     {
-        _mediator = mediator;
+        _sender = mediator;
     }
 
 
@@ -35,7 +35,7 @@ public class EmailController : ControllerBase
     {
         int.TryParse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out var authenticatedUserId);
         dto.UserId = authenticatedUserId;
-        var email = await _mediator.Send(dto, cancellationToken);
+        var email = await _sender.Send(dto, cancellationToken);
         return Ok(email);
     }
 
@@ -52,7 +52,7 @@ public class EmailController : ControllerBase
         var requestDto = new EmailGetQuery(Id: id);
         try
         {
-            var email = await _mediator.Send(requestDto, cancellationToken);
+            var email = await _sender.Send(requestDto, cancellationToken);
             return Ok(email);
         }
 
@@ -70,7 +70,7 @@ public class EmailController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetEmails(CancellationToken cancellationToken)
     {
-        var emails = await _mediator.Send(new EmailsGetQuery(), cancellationToken);
+        var emails = await _sender.Send(new EmailsGetQuery(), cancellationToken);
         return emails.Any() ? Ok() : NotFound();
     }
 }
