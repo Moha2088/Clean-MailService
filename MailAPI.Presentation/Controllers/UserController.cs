@@ -112,7 +112,7 @@ public class UserController : ControllerBase
 
         catch(UserNotFoundException e)
         {
-            _logger.LogInformation(e.Message);
+            _logger.LogError(e.Message);
             return NotFound(e.Message);
         }
     }

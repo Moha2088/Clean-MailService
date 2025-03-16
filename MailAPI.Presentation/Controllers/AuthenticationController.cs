@@ -28,7 +28,7 @@ namespace MailAPI.Presentation.Controllers
 
             catch(UnauthorizedAccessException e)
             {
-                _logger.LogInformation(e.Message);
+                _logger.LogError(e.Message);
                 return Unauthorized(e.Message);
             }
         }

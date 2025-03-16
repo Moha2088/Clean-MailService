@@ -60,7 +60,7 @@ public class EmailController : ControllerBase
 
         catch(EmailNotFoundException e)
         {
-            _logger.LogInformation(e.Message);
+            _logger.LogError(e.Message);
             return NotFound(e.Message);
         }
     }
