@@ -16,10 +16,12 @@ namespace MailAPI.Presentation.Controllers;
 public class UserController : ControllerBase
 {
     private readonly ISender _sender;
+    private readonly ILogger<UserController> _logger;
 
-    public UserController(IMediator mediator)
+    public UserController(ISender sender, ILogger<UserController> logger)
     {
-        _sender = mediator;
+        _sender = sender;
+        _logger = logger;
     }
 
 
@@ -53,6 +55,7 @@ public class UserController : ControllerBase
 
         catch(ValidationException e)
         {
+            _logger.LogError(e.Message);
             return BadRequest(e.Message);
         }
     }
@@ -109,6 +112,7 @@ public class UserController : ControllerBase
 
         catch(UserNotFoundException e)
         {
+            _logger.LogInformation(e.Message);
             return NotFound(e.Message);
         }
     }

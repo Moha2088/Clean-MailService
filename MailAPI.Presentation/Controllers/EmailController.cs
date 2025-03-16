@@ -16,10 +16,12 @@ namespace MailAPI.Presentation.Controllers;
 public class EmailController : ControllerBase
 {
     private readonly ISender _sender;
+    private readonly ILogger<EmailController> _logger;
 
-    public EmailController(IMediator mediator) 
+    public EmailController(ISender sender, ILogger<EmailController> logger)
     {
-        _sender = mediator;
+        _sender = sender;
+        _logger = logger;
     }
 
 
@@ -58,6 +60,7 @@ public class EmailController : ControllerBase
 
         catch(EmailNotFoundException e)
         {
+            _logger.LogInformation(e.Message);
             return NotFound(e.Message);
         }
     }

@@ -9,10 +9,12 @@ namespace MailAPI.Presentation.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly ISender _sender;
+        private readonly ILogger<AuthenticationController> _logger;
 
-        public AuthenticationController(IMediator mediator)
+        public AuthenticationController(ISender sender, ILogger<AuthenticationController> logger)
         {
-            _sender = mediator;
+            _sender = sender;
+            _logger = logger;
         }
 
         [HttpPost("login")]
@@ -26,6 +28,7 @@ namespace MailAPI.Presentation.Controllers
 
             catch(UnauthorizedAccessException e)
             {
+                _logger.LogInformation(e.Message);
                 return Unauthorized(e.Message);
             }
         }

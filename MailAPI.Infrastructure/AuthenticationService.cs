@@ -5,6 +5,7 @@ using MailAPI.Domain.Exceptions.User;
 using MailAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -18,7 +19,7 @@ public class AuthenticationService : IAuthenticationService
     private readonly DataContext _context;
     private readonly IConfiguration _config;
 
-    public AuthenticationService(DataContext context)
+    public AuthenticationService(DataContext context, ILogger<AuthenticationService> logger)
     {
         _context = context;
         _config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();

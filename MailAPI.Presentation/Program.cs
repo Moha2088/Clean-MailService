@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MailAPI.Presentation.ScalarOptions;
+using Serilog.Sinks.Elasticsearch;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,8 +25,20 @@ builder.Services
     .AddApplicationServices()
     .AddPresentationServices();
 
-builder.Host.UseSerilog((context, config) => config
-    .ReadFrom.Configuration(context.Configuration));
+builder.Host.UseSerilog((context, config) =>
+{
+    config.ReadFrom.Configuration(context.Configuration)
+    .Enrich.WithMachineName()
+    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(context.Configuration["ElasticSearch:Uri"] ??
+            throw new InvalidOperationException("Uri not found!")))
+    {
+        IndexFormat = $"{context.Configuration["AppName"]}-logs-{context.HostingEnvironment.EnvironmentName?.ToLower()}-{DateTime.UtcNow:dd-mm-yyyy}",
+        AutoRegisterTemplate = true,
+        NumberOfShards = 2,
+        NumberOfReplicas = 1
+    });
+});
+
 
 
 builder.Services.AddAuthorization()
