@@ -69,10 +69,8 @@ public class EmailRepository : IEmailRepository
         await _context.SaveChangesAsync(cancellationToken);
         await smtpClient.SendMailAsync(message);
 
-        var mailJobId = _backgroundJobClient.Schedule(() => SendFollowUpMail(user.Id, new MailAddress(fromEmail), dto.To, credentials),
+        var mailJobId = _backgroundJobClient.Schedule(() => SendFollowUpMail(user.Id, fromEmail, dto.To, credentials),
             TimeSpan.FromSeconds(30));
-
-        _backgroundJobClient.ContinueJobWith(mailJobId, () => _logger.LogInformation("Follow up email has been sent!"));
 
         return _mapper.Map<EmailGetResponseDto>(email);
     }
@@ -95,7 +93,7 @@ public class EmailRepository : IEmailRepository
         return _mapper.Map<List<EmailGetResponseDto>>(emails);
     }
 
-    public async Task SendFollowUpMail(int userId, MailAddress from, string to, NetworkCredential credentials)
+    public async Task SendFollowUpMail(int userId, string from, string to, NetworkCredential credentials)
     {
         var subject = "Continuation Email";
         var body = "<p>Hello</p>" +
@@ -108,7 +106,7 @@ public class EmailRepository : IEmailRepository
             Subject = subject,
             Body = body,
             IsBodyHtml = true,
-            From = from
+            From = new MailAddress(from)
         };
 
         followUpMessage.To.Add(new MailAddress(to));
@@ -136,5 +134,7 @@ public class EmailRepository : IEmailRepository
         };
 
         await smtpClient.SendMailAsync(followUpMessage);
+
+        _logger.LogInformation("Follow-Up email has been sent!");
     }
 }
