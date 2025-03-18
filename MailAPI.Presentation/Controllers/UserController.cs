@@ -53,7 +53,7 @@ public class UserController : ControllerBase
             return Created(nameof(CreateUser), result);
         }
 
-        catch(ValidationException e)
+        catch (ValidationException e)
         {
             _logger.LogError(e.Message);
             return BadRequest(e.Message);
@@ -70,9 +70,18 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(UserGetResponseDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUser([FromRoute] int id, CancellationToken cancellationToken)
     {
-        var requestDto = new UserGetQuery(Id: id);
-        var result = await _sender.Send(requestDto, cancellationToken);
-        return Ok(result);
+        try
+        {
+            var requestDto = new UserGetQuery(Id: id);
+            var result = await _sender.Send(requestDto, cancellationToken);
+            return Ok(result);
+        }
+
+        catch (UserNotFoundException e)
+        {
+            _logger.LogError(e.Message);
+            return NotFound(e.Message);
+        }
     }
 
     /// <summary>
@@ -110,7 +119,7 @@ public class UserController : ControllerBase
             return Ok(result);
         }
 
-        catch(UserNotFoundException e)
+        catch (UserNotFoundException e)
         {
             _logger.LogError(e.Message);
             return NotFound(e.Message);
@@ -124,6 +133,7 @@ public class UserController : ControllerBase
     /// <param name="cancellationToken">A cancellation token</param>
     /// <response code="204">Returns NoContent</response>
     [HttpDelete("{id:int}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteUser([FromRoute] int id, CancellationToken cancellationToken)
     {
         var requestDto = new UserDeleteCommand(Id: id);

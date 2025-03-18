@@ -11,7 +11,6 @@ using AutoMapper;
 using MailAPI.Domain.Entities;
 using Microsoft.Extensions.Logging;
 using MailAPI.Domain.Exceptions.User;
-using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 using MailAPI.Domain.Exceptions.Email;
 using MailAPI.Application.Commands.Emails;
 using MailAPI.Application.Commands.Handlers.Dtos.EmailDtos;
@@ -20,7 +19,7 @@ namespace MailAPI.Infrastructure.Repositories;
 public class EmailRepository : IEmailRepository
 {
     private readonly IBackgroundJobClient _backgroundJobClient;
-    private SecretClient _secretClient;
+    private readonly SecretClient _secretClient;
     private readonly DataContext _context;
     private readonly IMapper _mapper;
     private readonly ILogger<EmailRepository> _logger;
@@ -54,7 +53,7 @@ public class EmailRepository : IEmailRepository
         message.To.Add(new MailAddress(dto.To));
 
         var credentials = new NetworkCredential(fromEmail, appPassword);
-        var smtpClient = new SmtpClient("smtp.gmail.com")
+        using var smtpClient = new SmtpClient("smtp.gmail.com")
         {
             Port = 587,
             EnableSsl = true,
