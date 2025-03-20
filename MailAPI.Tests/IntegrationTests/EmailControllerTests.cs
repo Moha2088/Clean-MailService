@@ -29,6 +29,17 @@ namespace MailAPI.Tests.IntegrationTests
         [Fact]
         public async Task GetEmails_ShouldReturnNotFound_WhenNoEmailsExist()
         {
+            _context.Users.Add(
+                new User
+                {
+                    Name = "Test",
+                   Email = "Test@test.com",
+                   Password = "Test123"
+                }
+            );
+
+            await _context.SaveChangesAsync();
+
             var result = await _client.GetAsync(BaseAddress.Email);
 
             Assert.NotNull(result);

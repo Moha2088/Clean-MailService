@@ -84,10 +84,15 @@ public class EmailRepository : IEmailRepository
         return _mapper.Map<EmailGetResponseDto>(email);
     }
 
-    public async Task<List<EmailGetResponseDto>> GetEmails(CancellationToken cancellationToken)
+    public async Task<List<EmailGetResponseDto>> GetEmails(int id, CancellationToken cancellationToken)
     {
+        var user = await _context.Users
+            .AsNoTracking()
+            .SingleOrDefaultAsync(x => x.Id.Equals(id), cancellationToken) ?? throw new UserNotFoundException();
+
         var emails = await _context.Emails
             .AsNoTracking()
+            .Where(x => x.UserId.Equals(user.Id))
             .ToListAsync(cancellationToken);
 
         return _mapper.Map<List<EmailGetResponseDto>>(emails);

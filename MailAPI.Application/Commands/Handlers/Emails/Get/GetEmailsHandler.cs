@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MailAPI.Application.Queries.Emails;
 using MailAPI.Application.Commands.Handlers.Dtos.EmailDtos;
+using MailAPI.Domain.Exceptions.User;
 
 namespace MailAPI.Application.Commands.Handlers.Emails.Get
 {
@@ -23,7 +24,7 @@ namespace MailAPI.Application.Commands.Handlers.Emails.Get
 
         public async Task<List<EmailGetResponseDto>> Handle(EmailsGetQuery request, CancellationToken cancellationToken)
         {
-            var emails = await _emailRepository.GetEmails(cancellationToken);
+            var emails = await _emailRepository.GetEmails(request.Id, cancellationToken);
             return emails;
         }
     }

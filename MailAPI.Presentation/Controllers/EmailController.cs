@@ -58,7 +58,7 @@ public class EmailController : ControllerBase
             return Ok(email);
         }
 
-        catch(EmailNotFoundException e)
+        catch (EmailNotFoundException e)
         {
             _logger.LogError(e.Message);
             return NotFound(e.Message);
@@ -69,11 +69,15 @@ public class EmailController : ControllerBase
     /// Gets a list of emails
     /// </summary>
     /// <param name="cancellationToken">A cancellation token</param>
-    /// <returns></returns>
+    /// <response code="200">Returns OK with Emails</response>
+    /// <response code="404">Returns NotFound if no emails exist</response>
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetEmails(CancellationToken cancellationToken)
     {
-        var emails = await _sender.Send(new EmailsGetQuery(), cancellationToken);
-        return emails.Any() ? Ok() : NotFound();
+        int.TryParse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out var userId);
+        var emails = await _sender.Send(new EmailsGetQuery(Id: userId), cancellationToken);
+        return emails.Any() ? Ok(emails) : NotFound();
     }
 }
