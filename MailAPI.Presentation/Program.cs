@@ -10,6 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MailAPI.Presentation.ScalarOptions;
 using Serilog.Sinks.Elasticsearch;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using HealthChecks.UI.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +25,7 @@ builder.Services.AddOpenApi("v1", x => x.AddDocumentTransformer<BearerSecuritySc
 builder.Services
     .AddInfrastructureServices(builder)
     .AddApplicationServices()
-    .AddPresentationServices();
+    .AddPresentationServices(builder);
 
 builder.Host.UseSerilog((context, config) =>
 {
@@ -75,6 +77,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapHealthChecks("/_health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
