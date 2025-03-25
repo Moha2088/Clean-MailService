@@ -23,21 +23,4 @@ namespace MailAPI.Application.Validation.Email
                 .WithMessage("Body can't be empty!");
         }
     }
-
-    public sealed class SendMailPipelineBehaviour : IPipelineBehavior<EmailCreateCommand, EmailGetResponseDto>
-    {
-        public async Task<EmailGetResponseDto> Handle(EmailCreateCommand request, RequestHandlerDelegate<EmailGetResponseDto> next, CancellationToken cancellationToken)
-        {
-            var sendMailValidator = new SendEmailValidator();
-            var validationResult = await sendMailValidator.ValidateAsync(request, cancellationToken);
-
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
-
-            var response = await next();
-            return response;
-        }
-    }
 }

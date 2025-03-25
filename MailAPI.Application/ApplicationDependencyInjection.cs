@@ -1,5 +1,5 @@
-﻿using MailAPI.Application.Validation;
-using MailAPI.Application.Validation.User;
+﻿using FluentValidation;
+using MailAPI.Application.Validation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MailAPI.Application
@@ -8,10 +8,11 @@ namespace MailAPI.Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services) 
         {
-
             services.AddMediatR(cfg => cfg
             .RegisterServicesFromAssembly(typeof(ApplicationDependencyInjection).Assembly)
-            .AddBehavior<CreateUserPipelineBehaviour>());
+            .AddOpenBehavior(typeof(GlobalValidationBehavior<,>)));
+
+            services.AddValidatorsFromAssembly(typeof(ApplicationDependencyInjection).Assembly);
 
             return services;
         }

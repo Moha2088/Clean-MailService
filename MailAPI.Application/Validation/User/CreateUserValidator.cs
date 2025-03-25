@@ -19,7 +19,7 @@ namespace MailAPI.Application.Validation.User
                 .Must(HaveAtleastOneUpperAndOneLower)
                 .Must(HaveAtleastOneSpecialChar)
                 .WithMessage("Password should be at least 8 characters and contain a number and a special character!");
-        }   
+        }
 
         private bool HaveAtLeastOneInteger(string password)
         {
@@ -37,24 +37,6 @@ namespace MailAPI.Application.Validation.User
                 '&', '*', '(', ')', '<', '>', '?', '}', '{', '~', ':', ']'};
 
             return password.Any(ch => specialChars.Any(spCh => ch.Equals(spCh)));
-        }
-    }
-        
-    
-    public sealed class CreateUserPipelineBehaviour : IPipelineBehavior<UserCreateCommand, UserGetResponseDto>
-    {
-        public async Task<UserGetResponseDto> Handle(UserCreateCommand dto, RequestHandlerDelegate<UserGetResponseDto> next, CancellationToken cancellationToken)
-        {
-            var createUserValidator = new CreateUserValidator();
-            var validationResult = await createUserValidator.ValidateAsync(dto, cancellationToken);
-
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
-
-            var response = await next();
-            return response;
         }
     }
 }
